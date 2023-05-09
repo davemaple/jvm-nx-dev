@@ -25,6 +25,7 @@ RUN echo 'Installing apt packages ...'
 RUN apt-get install -y \
   apt-utils \
   apt-transport-https \
+  software-properties-common \
   jq \
   git \
   lsof \
@@ -48,9 +49,8 @@ RUN touch $HOME/.ssh/known_hosts
 RUN ssh-keyscan -t rsa github.com >> $HOME/.ssh/known_hosts
 
 RUN echo 'Installing the official Docker key ...'
-RUN install -m 0755 -d /etc/apt/keyrings
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-RUN chmod a+r /etc/apt/keyrings/docker.gpg
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu kinetic stable"
 
 RUN echo 'Installing Docker ...'
 RUN apt-get install -y \

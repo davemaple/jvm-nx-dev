@@ -10,7 +10,7 @@ jobs:
 
   build:
 
-    runs-on: gamindev/jvm-nx-dev:latest
+    runs-on: gamindev/jvm-nx-dev:v1.0.0
 
     steps:
       - name: Checkout

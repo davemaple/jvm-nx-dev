@@ -113,5 +113,5 @@ RUN usermod -d /var/lib/mysql/ mysql
 RUN /etc/init.d/mysql start \
     && mysql --user root --password=password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
 
-# Run zsh on container start
-SHELL ["/bin/zsh", "--login", "-c"]
+# zsh entrypoint
+ENTRYPOINT /bin/zsh

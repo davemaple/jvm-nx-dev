@@ -9,9 +9,14 @@
 docker buildx build --no-cache --progress=plain --platform linux/amd64 -t jvm-nx-dev:latest .
 ```
 
-### test stuff
+### test stuff locally
 ```bash
-docker run --platform linux/amd64 -it jvm-nx-dev:latest
+docker run --platform linux/amd64 -it jvm-nx-dev:latest /bin/bash
+```
+
+### test stuff remotely
+```bash
+docker run --platform linux/amd64 -it jvm-nx-dev:latest /bin/bash
 ```
 
 ### start services when using the container

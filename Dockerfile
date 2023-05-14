@@ -84,10 +84,17 @@ ENV PATH=$GRADLE_HOME/bin:$PATH
 RUN echo 'gradle --version'
 RUN gradle --version
 
+RUN echo 'Installing ohmyzsh ...'
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+RUN chsh -s /bin/zsh
+RUN echo 'zsh --version'
+RUN zsh --version
+
 RUN echo 'Installing nvm ...'
 RUN echo -n "\nexport NVM_DIR=/opt/nvm\n" >> /root/.bashrc
 RUN mkdir -p $NVM_DIR
 RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
+    && chmod +x . $NVM_DIR/nvm.sh \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NVM_VERSION \
     && nvm alias default $NVM \
@@ -96,14 +103,13 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
     && npm install -g yarn \
     && npm install -g nx \
     && npm install -g aws-cdk
-ENV NODE_PATH $NVM_DIR/versions/node/$NODE_VERSION/bin
+ENV NODE_PATH $NVM_DIR/versions/node/v$NVM_VERSION/bin
 ENV PATH $NODE_PATH:$PATH
-
-RUN echo 'Installing ohmyzsh ...'
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-RUN chsh -s /bin/zsh
-RUN echo 'zsh --version'
-RUN zsh --version
+RUN echo 'nvm --version' && sh -c "nvm --version" && zsh -c "nvm --version"
+RUN echo 'node --version' && sh -c "node --version" && zsh -c "node --version"
+RUN echo 'npm --version' && sh -c "npm --version" && zsh -c "npm --version"
+RUN echo 'nx --version' && sh -c "nx --version" && zsh -c "nx --version"
+RUN echo 'aws-cdk --version' && sh -c "aws-cdk --version" && zsh -c "aws-cdk --version"
 
 RUN echo 'Install MySQL ...'
 RUN echo "mysql-server mysql-server/root_password password password" | debconf-set-selections
